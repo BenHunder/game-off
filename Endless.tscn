@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://clhvlo20eqlb3"]
+
+[ext_resource type="Script" path="res://Endless.cs" id="1_l7os2"]
+[ext_resource type="Texture2D" uid="uid://c7c3bmnlxxim4" path="res://background.png" id="1_y2fj2"]
+
+[node name="Endless" type="Node2D"]
+script = ExtResource("1_l7os2")
+
+[node name="Background" type="Sprite2D" parent="."]
+position = Vector2(201, 113)
+texture = ExtResource("1_y2fj2")
