@@ -9,3 +9,10 @@ script = ExtResource("1_l7os2")
 [node name="Background" type="Sprite2D" parent="."]
 position = Vector2(201, 113)
 texture = ExtResource("1_y2fj2")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="."]
+offset_left = 5.0
+offset_top = 226.0
+offset_right = 399.0
+offset_bottom = 269.0
+text = "left: q right: p"

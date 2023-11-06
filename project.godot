@@ -15,6 +15,12 @@ run/main_scene="res://World.tscn"
 config/features=PackedStringArray("4.1", "C#", "GL Compatibility")
 config/icon="res://icon.svg"
 
+[display]
+
+window/size/viewport_width=600
+window/size/viewport_height=325
+window/stretch/mode="viewport"
+
 [dotnet]
 
 project/assembly_name="Game Off"

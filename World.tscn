@@ -5,3 +5,4 @@
 [node name="World" type="Node2D"]
 
 [node name="Endless" parent="." instance=ExtResource("1_n7pcb")]
+visible = true
