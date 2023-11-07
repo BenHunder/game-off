@@ -1,7 +1,8 @@
 using Godot;
 using System;
 
-//python is better
+//python sucks
+
 
 public partial class Endless : Node2D
 {
