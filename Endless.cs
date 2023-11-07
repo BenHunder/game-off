@@ -1,6 +1,8 @@
 using Godot;
 using System;
 
+//python is better
+
 public partial class Endless : Node2D
 {
 	PackedScene hold;
