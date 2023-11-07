@@ -1,0 +1,14 @@
+General:
+git status //you can use this in between every command 
+git stash //erase unstaged changes (changes you’ve made since the last pull)
+
+New feature:
+git checkout dev
+git pull origin dev
+*make changes*
+git checkout -b <new-branch-name>
+git add .
+git commit -m “description of my new features”
+git push origin <new-branch-name>
+
+Then you can create a pull request from <new-branch-name> to dev within the Github UI
