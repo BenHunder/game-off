@@ -1,7 +1,9 @@
-[gd_scene load_steps=3 format=3 uid="uid://clhvlo20eqlb3"]
+[gd_scene load_steps=5 format=3 uid="uid://clhvlo20eqlb3"]
 
 [ext_resource type="Script" path="res://Endless.cs" id="1_l7os2"]
 [ext_resource type="Texture2D" uid="uid://c7c3bmnlxxim4" path="res://background.png" id="1_y2fj2"]
+[ext_resource type="Script" path="res://WallManager.cs" id="3_0ei4t"]
+[ext_resource type="Script" path="res://GameSettings.cs" id="4_8ko08"]
 
 [node name="Endless" type="Node2D"]
 script = ExtResource("1_l7os2")
@@ -10,9 +12,21 @@ script = ExtResource("1_l7os2")
 position = Vector2(201, 113)
 texture = ExtResource("1_y2fj2")
 
-[node name="RichTextLabel" type="RichTextLabel" parent="."]
+[node name="DebugInfo" type="RichTextLabel" parent="."]
 offset_left = 5.0
 offset_top = 226.0
 offset_right = 399.0
 offset_bottom = 269.0
 text = "left: q right: p"
+
+[node name="WallManager" type="Node2D" parent="."]
+script = ExtResource("3_0ei4t")
+
+[node name="Timer" type="Timer" parent="WallManager"]
+wait_time = 2.0
+autostart = true
+
+[node name="GameSettings" type="Node" parent="."]
+script = ExtResource("4_8ko08")
+
+[connection signal="timeout" from="WallManager/Timer" to="WallManager" method="CreateHold"]
