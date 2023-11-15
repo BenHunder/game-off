@@ -30,7 +30,7 @@ public partial class Endless : Node2D
 		{
 			PopupPanel p = (PopupPanel)_popUp.Instantiate();
 			CallDeferred("add_child", p);
-			}
+		}
 	}
 	
 	public override void _UnhandledInput(InputEvent @event)

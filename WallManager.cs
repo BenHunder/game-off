@@ -8,7 +8,7 @@ public partial class WallManager : Node2D
 {
 	public bool GameStarted;
 
-	private List<Hold> _wall;
+	private List<Node2D> _wall;
 	private PackedScene _hold;
 
 	private GameSettings _settings;
@@ -23,16 +23,19 @@ public partial class WallManager : Node2D
 	{
 		_hold = (PackedScene)GD.Load("res://Hold.tscn");
 		_settings = GetNode<GameSettings>("../GameSettings");
-		_wall = new List<Hold>();
+		_wall = new List<Node2D>();
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
-		foreach(Hold h in _wall.ToList())
+		if(GameStarted)
 		{
-			h.Position = new Vector2(h.Position.X, h.Position.Y + 0.1f);
-			if(h.Position.Y > 225) RemoveHold(h);
+			foreach(Node2D h in _wall.ToList())
+			{
+				h.Position = new Vector2(h.Position.X, h.Position.Y + 0.1f);
+				if(h.Position.Y > 225) RemoveHold(h);
+			}
 		}
 	}
 
@@ -62,7 +65,7 @@ public partial class WallManager : Node2D
 
 	public Node2D CreateHold(Vector2 pos)
 	{
-		//GD.Print("createHold " + pos);
+		if(_wall.Count() > 5) return null;
 		Node2D holdNode = (Node2D)_hold.Instantiate();
 		CallDeferred("add_child", holdNode);
 		holdNode.Position = pos;
@@ -70,12 +73,12 @@ public partial class WallManager : Node2D
 		int y = GD.RandRange(0, _keyLayout.GetLength(1)-1);
 		GD.Print("x,y:" + x + ", " + y);
 		holdNode.GetNode<RichTextLabel>("Label").Text = _keyLayout[x,y].ToString();
-		_wall.Add((Hold)holdNode);
+		_wall.Add(holdNode);
 
 		return holdNode;
 	}
 
-	public void RemoveHold(Hold h)
+	public void RemoveHold(Node2D h)
 	{
 		_wall.Remove(h);
 		CallDeferred("remove_child", h);
