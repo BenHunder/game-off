@@ -18,5 +18,10 @@ offset_right = 399.0
 offset_bottom = 269.0
 text = "left: q right: p"
 
+[node name="Line2D" type="Line2D" parent="."]
+points = PackedVector2Array(2.08165e-12, 170, 400, 170)
+width = 2.0
+default_color = Color(1, 0, 0, 1)
+
 [node name="WallManager" type="Node2D" parent="."]
 script = ExtResource("3_f0itj")

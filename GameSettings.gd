@@ -11,11 +11,9 @@ var v1 = [KEY_F,KEY_J,KEY_F,KEY_J,KEY_F,KEY_J,KEY_F,KEY_J,KEY_F,KEY_J,KEY_F,KEY_
 var v2 = [KEY_F,KEY_J,KEY_F,KEY_D,KEY_F,KEY_J,KEY_F,KEY_J,KEY_K,KEY_J,KEY_K,KEY_J,]
 
 var key_layout : Array
-var current_level
 
 func _ready() -> void:
 	key_layout = qwerty_matrix
-	current_level = v2
 
 func get_flat_layout():
 	var flattened_array = []
