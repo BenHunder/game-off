@@ -8,18 +8,9 @@ func _ready() -> void:
 	_pop_up = preload("res://TextPopup.tscn")
 
 func _process(delta: float) -> void:
-	var held_keys = ''
-	var keys = []
-	for key in Settings.get_flat_layout():
-		if Input.is_key_pressed(key):
-			held_keys += Utilities.get_key_char(key)
-			keys.append(key)
-			game_started = true
-	$WallManager.try_grab(keys)
 	if game_started:
 		time_elapsed += delta
-		if $WallManager.wall.is_empty(): win()
-	$DebugInfo.text = Utilities.format_seconds(time_elapsed, true) + " held_keys: " + held_keys
+	$DebugInfo.text = Utilities.format_seconds(time_elapsed, true) + " held_keys: " + $WallManager.held_keys
 
 func lose():
 	pass

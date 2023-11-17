@@ -1,15 +1,19 @@
 extends Node2D
 class_name WallManager
 
-var game_started : bool = false
 var wall : Array = []
 var _hold : PackedScene
+var _parent
 const WIDTH = 400
 const HEIGHT = 225
 var level_index = 0
+var held_keys = ''
+
+var regrip_list = []
 
 func _ready() -> void:
 	_hold = preload("res://Hold.tscn")
+	_parent = get_parent()
 	wall = []
 	var n = 8
 	for i in range(0,n):
@@ -17,12 +21,33 @@ func _ready() -> void:
 		level_index += 1
 
 func _process(delta: float) -> void:
-	pass	
+	held_keys = ''
+	var keys = []
+	for key in Settings.get_flat_layout():
+		if Input.is_physical_key_pressed(key):
+			held_keys += Utilities.get_key_char(key)
+			keys.append(key)
+			_parent.game_started = true
+	update_regrip_list(keys)
+	for key in regrip_list:
+		if regrip_list.has(key):
+			keys.erase(key)
+#	var grabbed_keys = []
+#	for key in keys:
+#		print('key ', key, ' regrip 0 ', regrip_list.front(), ' regrip has ', regrip_list.has(key))
+#		if regrip_list.has(key): 
+#			print('found in regrip ' + Utilities.get_key_char(key))
+#			continue
+#		grabbed_keys.append(key)
+	try_grab(keys)	
+	
+	if _parent.game_started:
+		if wall.is_empty(): _parent.win()
 
-func try_grab(held_keys):
+func try_grab(keys):
 	if wall.is_empty(): return
 	for target_key in wall[0].keys:
-		if not held_keys.has(target_key): return
+		if not keys.has(target_key): return
 	advance()
 
 func advance():
@@ -60,7 +85,13 @@ func create_hold() -> Node2D:
 
 	return hold_node
 
+func update_regrip_list(keys):
+	for key in regrip_list:
+		if !keys.has(key):
+			regrip_list.erase(key)
+
 func remove_hold(h: Node2D) -> void:
+	regrip_list += h.keys
 	wall.erase(h)
 	call_deferred('remove_child', h)
 	h.queue_free()
