@@ -8,8 +8,11 @@ const WIDTH = 400
 const HEIGHT = 225
 const TRIGGER_HEIGHT = 170
 var held_keys = ''
+var hits = 0
+var misses = 0
 
 var regrip_list = [] #represents keys that need to be released before they become valid again
+var misclick_list = [] #represents each unique key that was clicked during step that was not included in hold
 
 var current_level
 
@@ -42,16 +45,19 @@ func _process(delta: float) -> void:
 
 func try_grab(keys):
 	if wall.is_empty(): return
-	for target_key in wall.front().keys:
-		if not keys.has(target_key): return
-	advance()
+	var matched_keys = keys.filter(func(k): return wall.front().keys.has(k))
+	var unmatched_keys = keys.filter(func(k): return not wall.front().keys.has(k))
+	misclick(unmatched_keys)
+	if matched_keys.size() == wall.front().keys.size(): advance()
 
 func advance():
+	hits += 1
+	misclick_list.clear()
 	if !wall.is_empty(): remove_hold(wall.front())
 	if !wall.is_empty(): position = Vector2(position.x, TRIGGER_HEIGHT - wall.front().position.y)
 	if !current_level.is_empty(): create_hold()
 	var rand_key_array = [KEY_J,KEY_F,KEY_K,KEY_D]
-	current_level.append(rand_key_array[randi_range(0,3)])
+	current_level.append(rand_key_array[randi_range(0,3)]) #comment this line to turn off 'endless'
 	
 func get_key_coordinates(k: int) -> Vector2:
 	var result : Vector2 = Vector2(-1, -1)
@@ -72,7 +78,7 @@ func create_hold() -> Node2D:
 	var kc = get_key_coordinates(new_key)
 #	hold_node.position = Vector2(kc.x * WIDTH/Settings.key_layout[0].size(), (8-level_index+1) * 20)
 	var y_top = 0
-	if wall.back(): y_top = wall.back().position.y
+	if !wall.is_empty(): y_top = wall.back().position.y
 	hold_node.position = Vector2(kc.x * WIDTH/Settings.key_layout[0].size(), y_top - 25)
 	hold_node.get_node('Label').text = (hold_node as Hold)._to_string()
 	wall.append(hold_node)
@@ -84,8 +90,16 @@ func update_regrip_list(keys):
 		if !keys.has(key):
 			regrip_list.erase(key)
 
+func misclick(keys):
+	var unmatched_keys = keys.filter(func(k): return not misclick_list.has(k))
+	misses += unmatched_keys.size()
+	misclick_list += unmatched_keys
+
 func remove_hold(h: Node2D) -> void:
 	regrip_list += h.keys
 	wall.erase(h)
 	call_deferred('remove_child', h)
 	h.queue_free()
+	
+func calculate_score():
+	return hits - (misses * 2)

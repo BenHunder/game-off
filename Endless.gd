@@ -10,7 +10,7 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	if game_started:
 		time_elapsed += delta
-	$DebugInfo.text = Utilities.format_seconds(time_elapsed, true) + " held_keys: " + $WallManager.held_keys
+	$DebugInfo.text = Utilities.format_seconds(time_elapsed, true) + " score: " + str($WallManager.calculate_score()) + " held_keys: " + $WallManager.held_keys
 
 func lose():
 	pass
